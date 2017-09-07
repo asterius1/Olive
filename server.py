@@ -1,5 +1,9 @@
 import tornado.ioloop
 import tornado.web
+import sys
+
+port = 80 if "serv" in sys.argv  else 8888
+
 ile_klikow = 0
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -17,9 +21,9 @@ def make_app():
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(8888)
+    app.listen(port)
     try:
-        print("starting")
+        print("starting on port " + str(port))
         tornado.ioloop.IOLoop.current().start()
         print("started")
     except:
