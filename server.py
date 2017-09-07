@@ -13,4 +13,12 @@ def make_app():
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
-    tornado.ioloop.IOLoop.current().start()
+    try:
+        print("starting")
+        tornado.ioloop.IOLoop.current().start()
+        print("started")
+    except:
+        pass
+    print("stopping")
+    tornado.ioloop.IOLoop.instance().stop()
+    print("stopped")
