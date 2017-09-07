@@ -3,13 +3,66 @@
     <style>
       body {
         background: olive;
+        font-family: monospace;
+        font-size: 4vw;
+      }
+      body.pogoda {
+        background: gold;
+      }
+      #obrazek_pogoda {
+        opacity: 0;
+        display: none;
+      }
+      #obrazek {
+        opacity: 1;
+      }
+      img {
+        width: 50%;
+        transition: opacity 1s;
       }
     </style>
   </head>
   <body>
     Witaj!
-    Zjadłeś liczba oliwek. <br>Mniam!
+    Zjadłeś liczba oliwek. <br>Mniam!<br><br>
+    <div id="miejsce_na_pogode">
+      <br>
+    </div>
+    <img id="obrazek_pogoda" src="http://3.bp.blogspot.com/-TpW9CkG_XqM/T8aY5ztLxUI/AAAAAAAAsuk/fI_5m3s5IMw/s1600/partly-cloudy-day-icon.png"
+      alt="there should be a sun here" onclick="react_to_click()">
+    <img id="obrazek" src="picture"
+      alt="there should be some olives here" onclick="react_to_click()">
     <script>
+      function react_to_click() {
+        console.log("klikanie")
+        document.body.className = "pogoda"
+        pobierzPogode()
+        var obrazek = document.getElementById("obrazek")
+        var obrazek_pogoda = document.getElementById("obrazek_pogoda")
+        obrazek.style.opacity = 0
+        setTimeout(function() {
+          obrazek_pogoda.style.display = "block"
+          setTimeout(function() {
+            obrazek_pogoda.style.opacity = 1
+          }, 100)
+        }, 1000)
+      }
+      
+      function pokazPogode(pogoda) {
+        var farenhajt = pogoda.query.results.channel.item.condition.temp;
+        var celcjusz = (farenhajt - 32) * 5 / 9
+        var text = `Temperatura w Warszawie to ${celcjusz.toFixed(0)}°C`
+        var element = document.getElementById("miejsce_na_pogode");
+        element.innerText = text;
+      }
+      function sparsujJson(r) {
+        return r.json()
+      }
+      function pobierzPogode() {
+        var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22warsaw%2C%20poland%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+        fetch(url).then(sparsujJson).then(pokazPogode)
+      }
+
       console.log("hejka!");
     </script>
   </body>
