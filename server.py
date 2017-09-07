@@ -1,10 +1,15 @@
 import tornado.ioloop
 import tornado.web
-
+ile_klikow = 0
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hej Albert!  Co tam u Ciebie słychać? :)")
-
+        global ile_klikow
+        text_strony = open("index.html").read()
+        text_strony_z_liczba = text_strony.replace("liczba", str(ile_klikow))
+        testowy_text = "Hej Albert!  Co tam u Ciebie słychać? :)<br>"
+        self.write(text_strony_z_liczba)
+        # self.write(str(ile_klikow))
+        ile_klikow += 1
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
