@@ -5,6 +5,10 @@ import sys
 port = 80 if "serv" in sys.argv  else 8888
 
 ile_klikow = 0
+class PictureHandler(tornado.web.RequestHandler):
+    def get(self):
+        text_obrazka = open("olive_picture.jpg", "rb").read()
+        self.write(text_obrazka)
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         global ile_klikow
@@ -17,6 +21,7 @@ class MainHandler(tornado.web.RequestHandler):
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
+        (r"/picture", PictureHandler),
     ])
 
 if __name__ == "__main__":
